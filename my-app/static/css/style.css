@@ -1,0 +1,104 @@
+/* style.css */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    background-image: url('http://googleusercontent.com/image_generation_content/0'); /* Gambar Latar dari AI */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container {
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+.login-box {
+    width: 320px;
+    text-align: center;
+    color: #333;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px 30px;
+    border-radius: 10px;
+}
+
+.login-box h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #003366; /* Biru korporat */
+    font-weight: 600;
+}
+
+.login-box p {
+    margin-bottom: 30px;
+    color: #555;
+    font-size: 14px;
+}
+
+.input-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    color: #333;
+    font-weight: 600;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: #0055a5;
+    box-shadow: 0 0 5px rgba(0, 85, 165, 0.3);
+}
+
+.login-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0055a5; /* Warna tombol utama */
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #003366; /* Warna saat hover */
+}
+
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.footer {
+    margin-top: 30px;
+    font-size: 12px;
+    color: #888;
+}
