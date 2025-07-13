@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <form method="POST" class="styled-form">
+        <h2>{{ title }}</h2>
+        
+        <div class="input-group">
+            <label for="name">Nama Ruangan</label>
+            <input type="text" id="name" name="name" value="{{ room.name if room else '' }}" required>
+        </div>
+        
+        <div class="input-group">
+            <label for="capacity">Kapasitas</label>
+            <input type="number" id="capacity" name="capacity" value="{{ room.capacity if room else '' }}" required min="1">
+        </div>
+
+        <div class="input-group">
+            <label for="location">Lokasi</label>
+            <input type="text" id="location" name="location" value="{{ room.location if room else '' }}" required placeholder="Contoh: Lantai 3">
+        </div>
+
+        <div class="input-group">
+            <label for="facilities">Fasilitas (pisahkan dengan koma)</label>
+            <textarea id="facilities" name="facilities" rows="4">{{ room.facilities if room else '' }}</textarea>
+        </div>
+        
+        <div class="form-actions">
+            <a href="{{ url_for('manage_rooms') }}" class="btn btn-secondary">Batal</a>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

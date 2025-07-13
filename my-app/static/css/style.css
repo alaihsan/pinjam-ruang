@@ -1,104 +1,303 @@
-/* style.css */
+/* General Styling */
+:root {
+    --primary-color: #0055a5;
+    --secondary-color: #003366;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --text-color: #343a40;
+    --success-color: #28a745;
+    --error-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    --sidebar-width: 260px;
+}
+
 body, html {
     margin: 0;
     padding: 0;
-    height: 100%;
     font-family: 'Poppins', sans-serif;
-    background-image: url('http://googleusercontent.com/image_generation_content/0'); /* Gambar Latar dari AI */
-    background-size: cover;
-    background-position: center;
+    background-color: #fdfdff;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* Main Layout with Sidebar */
+.page-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100%;
+    z-index: 1000;
+}
+
+.main-content {
+    flex-grow: 1;
+    margin-left: var(--sidebar-width);
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-header {
+    padding: 20px;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--medium-gray);
+}
+.sidebar-header i { margin-right: 15px; }
+
+.sidebar-nav {
+    flex-grow: 1;
+    padding: 20px 0;
+}
+.nav-item {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: var(--dark-gray);
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+}
+.nav-item i { width: 30px; text-align: center; margin-right: 10px; }
+.nav-item:hover {
+    background-color: var(--light-gray);
+    color: var(--primary-color);
+}
+
+.sidebar-footer {
+    padding: 20px;
+    border-top: 1px solid var(--medium-gray);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.user-info { display: flex; align-items: center; }
+.user-info i { font-size: 1.5rem; margin-right: 10px; }
+.logout-btn {
+    color: var(--dark-gray);
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+.logout-btn:hover { color: var(--error-color); }
+
+/* Main Content Area */
+.main-content .main-footer {
+    text-align: center;
+    padding: 20px 0 0 0;
+    margin-top: auto;
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.btn-primary { background-color: var(--primary-color); color: white; }
+.btn-primary:hover { background-color: var(--secondary-color); }
+.btn-secondary { background-color: var(--dark-gray); color: white; }
+.btn-secondary:hover { background-color: #5a6268; }
+.btn-danger { background-color: var(--error-color); color: white; }
+.btn-danger:hover { background-color: #c82333; }
+.btn-sm { padding: 5px 10px; font-size: 0.875rem; }
+
+/* Flash Messages */
+.flash-messages { margin-bottom: 20px; }
+.alert { padding: 15px; border-radius: var(--border-radius); color: #fff; margin-bottom: 10px; }
+.alert-success { background-color: var(--success-color); }
+.alert-danger { background-color: var(--error-color); }
+.alert-warning { background-color: var(--warning-color); color: #333; }
+.alert-info { background-color: var(--info-color); }
+
+/* Page Header */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    border-bottom: 1px solid var(--medium-gray);
+    padding-bottom: 20px;
+}
+.page-header h1 { margin: 0; color: var(--secondary-color); }
+
+/* Table Styling */
+.table-container {
+    background: #fff;
+    padding: 20px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.data-table th, .data-table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--medium-gray);
+}
+.data-table thead th {
+    background-color: var(--light-gray);
+    font-weight: 600;
+    color: var(--secondary-color);
+}
+.data-table tbody tr:hover { background-color: var(--light-gray); }
+.action-buttons { display: flex; gap: 10px; }
+
+/* Form Styling (Fixes the messy form) */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+.styled-form {
+    background: #fff;
+    padding: 40px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 600px;
+}
+.styled-form h2 {
+    text-align: center;
+    color: var(--secondary-color);
+    margin-top: 0;
+    margin-bottom: 30px;
+}
+.input-group { margin-bottom: 20px; }
+.input-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+.input-group input, .input-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--medium-gray);
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+.input-group input:focus, .input-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(0, 85, 165, 0.2);
+}
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+/* Modal Styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+}
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: var(--border-radius);
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+.close-button:hover, .close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+.modal-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Responsive (Dashboard Cards) */
+.room-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 25px;
+}
+/* ... (sisa CSS dari sebelumnya untuk room-card, auth-box, dll.) ... */
+.room-card {
+    background: #fff;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.room-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+.room-card-header { padding: 20px; border-bottom: 1px solid var(--light-gray); display: flex; justify-content: space-between; align-items: center; }
+.room-card-header h3 { margin: 0; color: var(--primary-color); }
+.status-badge { padding: 5px 10px; border-radius: 15px; font-size: 0.8rem; font-weight: 600; color: #fff; }
+.status-badge.available { background-color: var(--success-color); }
+.status-badge.booked { background-color: var(--error-color); }
+.room-card-body { padding: 20px; flex-grow: 1; }
+.room-card-body p { margin: 0 0 10px 0; }
+.room-card-footer { padding: 20px; background-color: var(--light-gray); border-top: 1px solid var(--medium-gray); display: flex; justify-content: space-between; border-bottom-left-radius: var(--border-radius); border-bottom-right-radius: var(--border-radius); }
+
+.auth-container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: var(--light-gray);
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-.login-container {
-    backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.1);
+.auth-box {
+    background: #fff;
     padding: 40px;
-    border-radius: 15px;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-}
-
-.login-box {
-    width: 320px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 400px;
     text-align: center;
-    color: #333;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 40px 30px;
-    border-radius: 10px;
-}
-
-.login-box h2 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #003366; /* Biru korporat */
-    font-weight: 600;
-}
-
-.login-box p {
-    margin-bottom: 30px;
-    color: #555;
-    font-size: 14px;
-}
-
-.input-group {
-    text-align: left;
-    margin-bottom: 20px;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-size: 14px;
-    color: #333;
-    font-weight: 600;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    font-family: 'Poppins', sans-serif;
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-color: #0055a5;
-    box-shadow: 0 0 5px rgba(0, 85, 165, 0.3);
-}
-
-.login-button {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 5px;
-    background-color: #0055a5; /* Warna tombol utama */
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.login-button:hover {
-    background-color: #003366; /* Warna saat hover */
-}
-
-.error-message {
-    background-color: #ffebee;
-    color: #c62828;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    font-size: 14px;
-}
-
-.footer {
-    margin-top: 30px;
-    font-size: 12px;
-    color: #888;
 }

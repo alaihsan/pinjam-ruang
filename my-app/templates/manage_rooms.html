@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Kelola Ruangan - {{ super() }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Kelola Ruangan</h1>
+    <a href="{{ url_for('add_room') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Ruangan</a>
+</div>
+
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Nama Ruangan</th>
+                <th>Lokasi</th>
+                <th>Kapasitas</th>
+                <th>Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for room in rooms %}
+            <tr>
+                <td>{{ room.name }}</td>
+                <td>{{ room.location }}</td>
+                <td>{{ room.capacity }} orang</td>
+                <td class="action-buttons">
+                    <a href="{{ url_for('edit_room', room_id=room.id) }}" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                    <button class="btn btn-danger btn-sm" onclick="openDeleteModal({{ room.id }}, '{{ room.name }}')"><i class="fas fa-trash"></i> Hapus</button>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="4">Belum ada data ruangan.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Konfirmasi Hapus -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeDeleteModal()">&times;</span>
+        <h2>Konfirmasi Hapus</h2>
+        <p>Anda akan menghapus ruangan: <strong id="roomNameToDelete"></strong>.</p>
+        <p>Tindakan ini tidak dapat diurungkan. Untuk melanjutkan, ketik "<strong>setuju</strong>" di bawah ini.</p>
+        <form id="deleteForm" action="" method="POST">
+            <div class="input-group">
+                <label for="confirmText">Ketik "setuju" untuk konfirmasi</label>
+                <input type="text" id="confirmText" onkeyup="validateDelete()">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Batal</button>
+                <button type="submit" id="confirmDeleteButton" class="btn btn-danger" disabled>Hapus Permanen</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function openDeleteModal(roomId, roomName) {
+    const modal = document.getElementById('deleteModal');
+    const form = document.getElementById('deleteForm');
+    document.getElementById('roomNameToDelete').innerText = roomName;
+    form.action = '/delete-room/' + roomId;
+    modal.style.display = 'block';
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+    document.getElementById('confirmText').value = '';
+    document.getElementById('confirmDeleteButton').disabled = true;
+    modal.style.display = 'none';
+}
+
+function validateDelete() {
+    const confirmText = document.getElementById('confirmText').value;
+    const deleteButton = document.getElementById('confirmDeleteButton');
+    if (confirmText.toLowerCase() === 'setuju') {
+        deleteButton.disabled = false;
+    } else {
+        deleteButton.disabled = true;
+    }
+}
+
+// Menutup modal jika user klik di luar area modal
+window.onclick = function(event) {
+    const modal = document.getElementById('deleteModal');
+    if (event.target == modal) {
+        closeDeleteModal();
+    }
+}
+</script>
+{% endblock %}
