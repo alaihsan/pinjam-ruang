@@ -1,97 +1,88 @@
-{% extends "base.html" %}
+{% extends "dashboard.html" %}
 
-{% block title %}Kelola Ruangan - {{ super() }}{% endblock %}
+{% block title %}Kelola Ruangan - Sistem Pinjam Ruang{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>Kelola Ruangan</h1>
-    <a href="{{ url_for('add_room') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Ruangan</a>
+<div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+    <h1 class="h2">Kelola Ruangan</h1>
+    <a href="{{ url_for('add_room') }}" class="btn btn-primary"><i class="fas fa-plus me-1"></i> Tambah Ruangan</a>
 </div>
 
-<div class="table-container">
-    <table class="data-table">
-        <thead>
-            <tr>
-                <th>Nama Ruangan</th>
-                <th>Lokasi</th>
-                <th>Kapasitas</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for room in rooms %}
-            <tr>
-                <td>{{ room.name }}</td>
-                <td>{{ room.location }}</td>
-                <td>{{ room.capacity }} orang</td>
-                <td class="action-buttons">
-                    <a href="{{ url_for('edit_room', room_id=room.id) }}" class="btn btn-secondary btn-sm"><i class="fas fa-edit"></i> Edit</a>
-                    <button class="btn btn-danger btn-sm" onclick="openDeleteModal({{ room.id }}, '{{ room.name }}')"><i class="fas fa-trash"></i> Hapus</button>
-                </td>
-            </tr>
-            {% else %}
-            <tr>
-                <td colspan="4">Belum ada data ruangan.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
-
-<!-- Modal Konfirmasi Hapus -->
-<div id="deleteModal" class="modal">
-    <div class="modal-content">
-        <span class="close-button" onclick="closeDeleteModal()">&times;</span>
-        <h2>Konfirmasi Hapus</h2>
-        <p>Anda akan menghapus ruangan: <strong id="roomNameToDelete"></strong>.</p>
-        <p>Tindakan ini tidak dapat diurungkan. Untuk melanjutkan, ketik "<strong>setuju</strong>" di bawah ini.</p>
-        <form id="deleteForm" action="" method="POST">
-            <div class="input-group">
-                <label for="confirmText">Ketik "setuju" untuk konfirmasi</label>
-                <input type="text" id="confirmText" onkeyup="validateDelete()">
+<div class="row">
+    {% for room in rooms %}
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0">{{ room.name }}</h5>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Batal</button>
-                <button type="submit" id="confirmDeleteButton" class="btn btn-danger" disabled>Hapus Permanen</button>
+            <div class="card-body">
+                <p class="card-text"><i class="fas fa-map-marker-alt text-secondary me-2"></i>{{ room.location or 'Lokasi tidak spesifik' }}</p>
+                <p class="card-text"><i class="fas fa-users text-secondary me-2"></i>Kapasitas: <strong>{{ room.capacity }} orang</strong></p>
+                <div>
+                    <p class="card-text mb-1"><i class="fas fa-couch text-secondary me-2"></i>Fasilitas:</p>
+                    <small class="text-muted fst-italic ps-4">{{ room.facilities or 'Tidak ada data fasilitas' }}</small>
+                </div>
             </div>
-        </form>
+            <div class="card-footer bg-light text-end border-0">
+                <a href="{{ url_for('edit_room', room_id=room.id) }}" class="btn btn-outline-secondary btn-sm"><i class="fas fa-edit"></i> Edit</a>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteModal" data-room-id="{{ room.id }}" data-room-name="{{ room.name }}">
+                    <i class="fas fa-trash"></i> Hapus
+                </button>
+            </div>
+        </div>
     </div>
+    {% else %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">
+            <p class="mb-0">Belum ada data ruangan yang ditambahkan.</p>
+            <p class="mb-0">Silakan klik tombol "Tambah Ruangan" untuk memulai.</p>
+        </div>
+    </div>
+    {% endfor %}
 </div>
-{% endblock %}
 
-{% block scripts %}
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Anda yakin ingin menghapus ruangan: <strong id="roomNameToDelete" class="text-danger"></strong>?
+        <p class="mt-2"><small>Tindakan ini tidak dapat diurungkan.</small></p>
+      </div>
+      <div class="modal-footer">
+        <form id="deleteForm" method="POST" action="">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-danger">Ya, Hapus</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-function openDeleteModal(roomId, roomName) {
-    const modal = document.getElementById('deleteModal');
-    const form = document.getElementById('deleteForm');
-    document.getElementById('roomNameToDelete').innerText = roomName;
-    form.action = '/delete-room/' + roomId;
-    modal.style.display = 'block';
-}
-
-function closeDeleteModal() {
-    const modal = document.getElementById('deleteModal');
-    document.getElementById('confirmText').value = '';
-    document.getElementById('confirmDeleteButton').disabled = true;
-    modal.style.display = 'none';
-}
-
-function validateDelete() {
-    const confirmText = document.getElementById('confirmText').value;
-    const deleteButton = document.getElementById('confirmDeleteButton');
-    if (confirmText.toLowerCase() === 'setuju') {
-        deleteButton.disabled = false;
-    } else {
-        deleteButton.disabled = true;
-    }
-}
-
-// Menutup modal jika user klik di luar area modal
-window.onclick = function(event) {
-    const modal = document.getElementById('deleteModal');
-    if (event.target == modal) {
-        closeDeleteModal();
-    }
+const deleteModal = document.getElementById('deleteModal');
+if (deleteModal) {
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+      // Button that triggered the modal
+      const button = event.relatedTarget;
+      
+      // Extract info from data-bs-* attributes
+      const roomName = button.getAttribute('data-room-name');
+      const roomId = button.getAttribute('data-room-id');
+      
+      // Update the modal's content.
+      const modalTitle = deleteModal.querySelector('.modal-title');
+      const roomNameElement = deleteModal.querySelector('#roomNameToDelete');
+      const deleteForm = deleteModal.querySelector('#deleteForm');
+      
+      modalTitle.textContent = 'Hapus Ruangan: ' + roomName;
+      roomNameElement.textContent = roomName;
+      deleteForm.action = "{{ url_for('delete_room', room_id=0) }}".replace('0', roomId);
+    });
 }
 </script>
 {% endblock %}

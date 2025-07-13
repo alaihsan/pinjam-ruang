@@ -1,32 +1,60 @@
-{% extends 'base.html' %}
+{% extends "dashboard.html" %}
 
-{% block title %}{{ form_title }}{% endblock %}
+{% block title %}{{ form_title }} - Sistem Pinjam Ruang{% endblock %}
 
 {% block content %}
-<h1 class="h2 mb-4">{{ form_title }}</h1>
+<div class="row justify-content-center">
+    <div class="col-lg-9 col-xl-8">
+        
+        <div class="d-flex align-items-center mb-4">
+            <a href="{{ url_for('manage_rooms') }}" class="btn btn-outline-secondary me-3" title="Kembali ke Kelola Ruangan">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 class="h2 mb-0">{{ form_title }}</h1>
+        </div>
 
-<div class="card">
-    <div class="card-body">
-        <form method="POST">
-            <div class="mb-3">
-                <label for="name" class="form-label">Nama Ruangan</label>
-                <input type="text" class="form-control" id="name" name="name" value="{{ room.name if room else '' }}" required>
+        <div class="card shadow-sm border-0">
+            <div class="card-body p-4 p-md-5">
+                <form method="POST">
+                    
+                    <div class="mb-4">
+                        <label for="name" class="form-label fs-5">Nama Ruangan</label>
+                        <input type="text" class="form-control form-control-lg" id="name" name="name" value="{{ room.name if room else '' }}" placeholder="Contoh: Ruang Meeting Merapi" required>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                             <label for="capacity" class="form-label">Kapasitas</label>
+                             <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-users"></i></span>
+                                <input type="number" class="form-control" id="capacity" name="capacity" value="{{ room.capacity if room else '' }}" required min="1" placeholder="Jumlah orang">
+                             </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label for="location" class="form-label">Lokasi</label>
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                                <input type="text" class="form-control" id="location" name="location" value="{{ room.location if room else '' }}" placeholder="Contoh: Gedung A, Lantai 2">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="facilities" class="form-label">Fasilitas</label>
+                        <textarea class="form-control" id="facilities" name="facilities" rows="4" placeholder="Proyektor, Papan Tulis, AC, Internet Cepat">{{ room.facilities if room else '' }}</textarea>
+                        <div class="form-text">Pisahkan setiap fasilitas dengan koma.</div>
+                    </div>
+
+                    <div class="d-flex justify-content-end pt-3 border-top">
+                        <a href="{{ url_for('manage_rooms') }}" class="btn btn-light me-2">Batal</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>
+                            Simpan
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="capacity" class="form-label">Kapasitas</label>
-                <input type="number" class="form-control" id="capacity" name="capacity" value="{{ room.capacity if room else '' }}" required>
-            </div>
-            <div class="mb-3">
-                <label for="location" class="form-label">Lokasi</label>
-                <input type="text" class="form-control" id="location" name="location" value="{{ room.location if room else '' }}">
-            </div>
-            <div class="mb-3">
-                <label for="facilities" class="form-label">Fasilitas (pisahkan dengan koma)</label>
-                <textarea class="form-control" id="facilities" name="facilities" rows="3">{{ room.facilities if room else '' }}</textarea>
-            </div>
-            <a href="{{ url_for('manage_rooms') }}" class="btn btn-secondary">Batal</a>
-            <button type="submit" class="btn btn-primary">Simpan</button>
-        </form>
+        </div>
     </div>
 </div>
 {% endblock %}
